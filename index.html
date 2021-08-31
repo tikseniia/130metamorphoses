@@ -18,15 +18,18 @@
     .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {border-top-color: rgba(22,16,190, .6) !important;}
     .mapboxgl-popup-close-button {
         color: #ffffff;
-        font-size: 3em;
-        padding: 15px;
+        font-size: 2em;
+        /*padding: .5em;*/
     }
     .mapboxgl-popup-content {
         max-width: 300px;
         background-color: rgba(22,16,190, .6);
         color: #ffffff;
         border-radius: 10px;
-        padding: 15px;
+        padding: 0px;
+        /*padding-top: 3em;*/
+        text-align: center;
+        border: 3px solid #ffffff;
     }
 
     .mapboxgl-popup-content h4 {
@@ -36,17 +39,27 @@
     .mapboxgl-popup-content p {
         font-size: 1.5em;
     }
+    .img--circle {
+        /*background-image: url(objects/budka.jpg);*/
+        width: 100px;
+        height: 100px;
+        /* float: left; */
+        /* border-radius: 100%; */
+        background-size: cover;
+        background-position-x: center;
+        background-position-y: center;
+    }
 </style>
 
 <div id="mapid"></div>
 
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoidGlrc2VuaWlhIiwiYSI6ImNqbzBobGpkZTAwd2Mza2xvZ2F4bTk1eG4ifQ.AWFalA05G9xWxDQqFOFBWA';
-    var map = new mapboxgl.Map({
+    const map = new mapboxgl.Map({
         container: 'mapid',
         style: 'mapbox://styles/mapbox/satellite-v9',
         center: [40.70913, 64.52549], //64.52545,40.71050?z=17 64.52549,40.70913?z=17
-        zoom: 16.5,
+        zoom: 15,
         // maxZoom: 7,
         // minZoom: 7,
     });
@@ -62,22 +75,66 @@
                         'type': 'Feature',
                         'properties': {
                             'description':
-                                '<h3><strong>Объект 0</strong></h3><h4>Художник_name</h4><p>А что это тут у нас? Вау, это в меру длинный текст о том, что за объект выбран, чтобы точно не промахнуться.</p>',
+                                '<div class="img--circle" style="background-image: url(objects/yellow-room.jpg)"></div><strong>Желтая Комната</strong><br><i>Ева</i>',
                         },
                         'geometry': {
                             'type': 'Point',
-                            'coordinates': [40.7080, 64.52539]
+                            'coordinates': [40.71072032297161, 64.52574729629839]
                         }
                     },
                     {
                         'type': 'Feature',
                         'properties': {
                             'description':
-                                '<h3><strong>Объект 1</strong></h3><h4>Художница_name</h4><p>Тут тоже нечто. И невероятно, тут тоже какой-то текст. А картинку лучше поставить вместо точки.</p>',
+                                '<div class="img--circle" style="background-image: url(objects/angar.jpg)"></div><strong>Вход в Ангар</strong><br><i>Ева</i>',
                         },
                         'geometry': {
                             'type': 'Point',
-                            'coordinates': [40.70913, 64.52549]
+                            'coordinates': [40.71357882920984, 64.52561540964447]
+                        }
+                    },
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<div class="img--circle" style="background-image: url(objects/blue-room.jpg)"></div><strong>Синяя комната</strong><br><i>Ася</i>',
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [40.711197406038764, 64.52592432629459]
+                        }
+                    },
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<div class="img--circle" style="background-image: url(objects/dom.jpg)"></div><strong>Домик</strong><br><i>Ваня</i>',
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [40.710408361934014, 64.52660643030907]
+                        }
+                    },
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<div class="img--circle" style="background-image: url(objects/pool.jpg)"></div><strong>Бассейн</strong><br><i>Ваня</i>',
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [40.71070884390281, 64.52668780029205]
+                        }
+                    },
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<div class="img--circle" style="background-image: url(objects/budka.jpg)"></div><strong>Будка</strong><br><i>Ваня</i>',
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [40.7136580188577, 64.52532362443355]
                         }
                     }
                 ]
@@ -90,7 +147,7 @@
             'source': 'points',
             'paint': {
                 'circle-color': 'rgba(22,16,190, .6)',
-                'circle-radius': 10,
+                'circle-radius': 1 + (map.getZoom() - 8)  * 0.4,
                 'circle-stroke-width': 3,
                 'circle-stroke-color': '#ffffff'
             }
@@ -123,6 +180,10 @@
 // Change it back to a pointer when it leaves.
         map.on('mouseleave', 'circle', () => {
             map.getCanvas().style.cursor = '';
+        });
+
+        map.on('click', (e) => {
+            console.log(JSON.stringify(e.point), JSON.stringify(e.lngLat.wrap()));
         });
     });
 </script>
